@@ -14,7 +14,7 @@
                     <div class="alert-title">
                         <h4>Whoops!</h4>
                     </div>
-                    There are some problems with your input.
+                    Terdapat kesalahan saat ingin menambahkan data
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -42,12 +42,13 @@
                     @foreach($pendaftarans as $p)
                         @if($p->pd_status == 7 && $p->pd_userid == session('user.id'))
                             <option value="{{ $p->pd_idlomba }}">{{ $p->lomba->lb_judul }}</option>
-                            <input for="sf_idpendaftaran" type="hidden" id="sf_idpendaftaran" name="sf_idpendaftaran" value="{{ $p->id }}">
+
                         @endif
                     @endforeach
                 </select>
             </div>
-
+            
+            <input for="sf_idpendaftaran" type="hidden" id="sf_idpendaftaran" name="sf_idpendaftaran" value="{{ $p->id }}">
             <input for="sf_userid" type="hidden" id="sf_userid" name="sf_userid" value="{{ session('user.id') }}">
 
                 <div class="row">
@@ -60,12 +61,17 @@
                         <option value="Juara Umum">Juara Umum</option>
                         <option value="Juara Favorit">Juara Favorit</option>
                         <option value="Juara Harapan">Juara Harapan</option>
+                        <option value="Partisipan">Partisipan</option>
                     </select>
                 </div>
 
+                <div class="form-group">
+                    <label for="sf_evaluasi">Evaluasi Lomba</label>
+                    <textarea class="form-control" name="sf_evaluasi" id="sf_evaluasi" rows="4"></textarea>
+                </div>
+
                 <div class="col-md-6">
-                <label for="sf_tanggal">Tanggal Input Sertifikat<span style="color: red">*</span></label>
-                <input type="date" name="sf_tanggal" id="sf_tanggal" class="form-control" required readonly >
+                <input type="hidden" name="sf_tanggal" id="sf_tanggal" class="form-control" required readonly >
             </div>
 
             <!-- Tambahkan script JavaScript di sini -->
@@ -91,8 +97,8 @@
                 </div>
             </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-danger">Reset</button>
+                <button type="submit" class="btn btn-primary">Kirim</button>
+                <a href="{{ route('dashboard.index') }}" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>

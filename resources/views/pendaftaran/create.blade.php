@@ -75,17 +75,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="pd_tgldaftar">Tanggal Daftar<span style="color: red">*</span></label>
-                        <input type="datetime-local" name="pd_tgldaftar" id="pd_tgldaftar" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="pd_tglpengajuan">Tanggal Pengajuan<span style="color: red">*</span></label>
-                        <input type="datetime-local" name="pd_tglpengajuan" id="pd_tglpengajuan" class="form-control" required>
+                        <input type="date" name="pd_tgldaftar" id="pd_tgldaftar" class="form-control" required>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-danger">Reset</button>
+                <button type="submit" class="btn btn-primary">Kirim</button>
+                <a href="{{ route('dashboard.index') }}" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>
@@ -96,4 +91,3 @@
         class="bi bi-arrow-up-short"></i></a>
 
 @endsection
-k

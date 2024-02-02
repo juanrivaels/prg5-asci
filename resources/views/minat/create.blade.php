@@ -14,7 +14,7 @@
                     <div class="alert-title">
                         <h4>Whoops!</h4>
                     </div>
-                    There are some problems with your input.
+                    Terdapat kesalahan saat ingin menambahkan data
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -54,8 +54,8 @@
                 </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-danger">Reset</button>
+                <button type="submit" class="btn btn-primary">Kirim</button>
+                <a href="{{ route('minat.create') }}" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Update Lomba')
+@section('title','Perbarui Data Lomba')
 
 @section('contents')
 
@@ -8,13 +8,13 @@
 <main id="main" class="main">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Form Update Lomba</h5>
+            <h5 class="card-title">Perbarui Data Lomba</h5>
             @if ($errors->any())
             <div class="alert alert-danger">
                 <div class="alert-title">
                     <h4>Whoops!</h4>
                 </div>
-                There are some problems with your input.
+                Terdapat kesalahan saat ingin menambahkan data
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -42,18 +42,19 @@
             </div>
             <br>
 
-        <div class="row">
-            <div class="col-md-6">
-                <label for="lb_tglmulai">Tanggal Mulai<span style="color: red">*</span></label>
-                <input type="datetime-local" name="lb_tglmulai" id="lb_tglmulai" value="{{ $lomba->lb_tglmulai }}" class="form-control" required>
-            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="lb_tglmulai">Tanggal Mulai<span style="color: red">*</span></label>
+                    <input type="date" name="lb_tglmulai" id="lb_tglmulai" value="{{ \Carbon\Carbon::parse($lomba->lb_tglmulai)->format('Y-m-d') }}" class="form-control" required>
+                </div>
 
-            <div class="col-md-6">
-                <label for="lb_tglselesai">Tanggal Selesai<span style="color: red">*</span></label>
-                <input type="datetime-local" name="lb_tglselesai" id="lb_tglselesai" value="{{ $lomba->lb_tglselesai }}" class="form-control" required>
+                <div class="col-md-6">
+                    <label for="lb_tglselesai">Tanggal Selesai<span style="color: red">*</span></label>
+                    <input type="date" name="lb_tglselesai" id="lb_tglselesai" value="{{ \Carbon\Carbon::parse($lomba->lb_tglselesai)->format('Y-m-d') }}" class="form-control" required>
+                </div>
             </div>
-        </div>
-        <br>
+            <br>
+
 
         <div class="row">
             <div class="col-md-6">
@@ -126,7 +127,7 @@
             <div class="form-group">
             <label for="lb_lokasi">Lokasi<span style="color: red">*</span></label>
             <input name="lb_lokasi" id="lb_lokasi" value="{{ $lomba->lb_lokasi }}" class="form-control" required>
-            <small style="color: red">Note:</small> <small>Jika dilaksanakan secara offline, tuliskan nama lokasi pelaksaan lombanya.</small>
+            <small style="color: red">Catatan:</small> <small>Jika dilaksanakan secara offline, tuliskan nama lokasi pelaksaan lombanya.</small>
             </div>
 
             <div class="form-group">
@@ -134,21 +135,10 @@
             <input name="lb_deskripsi" id="lb_deskripsi" value="{{ $lomba->lb_deskripsi }}" class="form-control" required>
             </div>
         <br>
-
-        <div class="form-group">
-            <label for="lb_gambar">Foto Lomba<span style="color: red">*</span></label>
-            <div class="input-group">
-                <div class="custom-file" style="width: 100%;">
-                    <input type="file" class="form-control" name="lb_gambar" id="lb_gambar" style="width: 100%;">
-                </div>
-                <small style="color: red">Note:</small> <small>Maksimal ukuran gambar 10MB!.</small>
-            </div>
-        </div>
-        <br>
         <br>
             
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a href="{{ route('lomba.index') }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Kirim</button>
+        <a href="{{ route('lomba.index') }}" class="btn btn-secondary">Kembali</a>
  
     </form>
         </div>

@@ -58,23 +58,30 @@
             <div class="row justify-content-center ">
                 <div class="col-lg-4 offset-7">
                     <div class="card">
+                            @if(session('error'))
+                            <div class="alert alert-danger mt-3">
+                                {{ session('error') }}
+                            </div>
+                            @endif
                         <div class="card-body">
-                            <h5 class="card-title text-center">Login</h5>
+                            <h5 class="card-title text-center">Selamat Datang, Pengguna!</h5>
 
                             <!-- Vertical Form -->
                             <form class="row g-3" action="{{ route('auth.action') }}">
                                 <div class="col-12">
-                                    <label for="Username" class="form-label">Username <span style="color:red">*</span></label>
+                                    <label for="Username" class="form-label">Nama Akun <span style="color:red">*</span></label>
                                     <input type="text" class="form-control" id="Username" name="Username">
                                 </div>
                                 <div class="col-12">
-                                    <label for="Password" class="form-label">Password <span style="color:red">*</span></label>
+                                    <label for="Password" class="form-label">Kata Sandi <span style="color:red">*</span></label>
                                     <input type="password" class="form-control" id="Password" name="Password">
                                 </div>
                                 <div class="col-12 text-center">
-                                    <button type="submit" class="btn btn-primary">Login</button>
+                                    <button type="submit" class="btn btn-primary">Masuk</button>
                                 </div>
                             </form><!-- Vertical Form -->
+
+
 
                         </div>
                     </div>
@@ -90,7 +97,7 @@
         <div class="mt-5" style="background-color: white; width: 100%; position: fixed; left: 0; bottom: 0;">
         <div class="container-fluid">
             <footer class="d-flex flex-wrap pt-3 pb-3 border-top">
-                Copyright &copy; @php echo date('Y') @endphp - Politeknik Astra 
+                Hak Cipta &copy; @php echo date('Y') @endphp - Kelompok 06 2D Politeknik Astra 
             </footer>
         </div>
     </div>

@@ -30,12 +30,29 @@ class SertifikatController extends Controller
         ]);
     }
 
+    public function downloadFile($file){
+        $path = '../storage/app/sertifikat/'.$file;
+        return response()->download($path, $file);
+    }
+
+
+
+    public function indexsertifikat()
+    {
+        $pendaftarans = Pendaftaran::all();
+        $users = User::all();
+        $lombas = Lomba::all();
+        $sertifikats = Sertifikat::with('lomba')->get();
+
+        return view('sertifikats.indexsertifikat', compact('pendaftarans', 'lombas', 'users', 'sertifikats'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createsertifikat()
     {
         $users = User::all();
         $lombas = Lomba::all();
@@ -43,7 +60,7 @@ class SertifikatController extends Controller
         ->where('pd_userid', session('user.id'))
         ->get();
 
-        return view('sertifikats.create', [
+        return view('sertifikats.createsertifikat', [
             'lombas' => $lombas,
             'users' => $users,
             'pendaftarans' => $pendaftarans,
@@ -61,7 +78,6 @@ class SertifikatController extends Controller
     public function storesertifikat(Request $request)
     {
         $request->validate([
-            'pd_idlomba' => 'required',
             'sf_juara' => 'required',
             'sf_tanggal' => 'required',
             'sf_sertifikat' => 'required', // Adjust file validation as needed
@@ -78,9 +94,9 @@ class SertifikatController extends Controller
         }
     
         if ($sertif) {
-            return redirect(route('sertifikats.create'))->with('success', 'Added!');
+            return redirect(route('sertifikats.createsertifikat'))->with('success', 'Berhasil menambahkan sertifikat!');
         } else {
-            return redirect(route('sertifikats.create'))->with('error', 'Failed to add Sertifikat.');
+            return redirect(route('sertifikats.createsertifikat'))->with('error', 'Gagal untuk menambahkan Sertifikat.');
         }
     }
 

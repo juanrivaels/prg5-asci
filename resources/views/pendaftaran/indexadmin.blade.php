@@ -27,9 +27,7 @@
                                         <th scope="col">Nama Mahasiswa</th>
                                         <th scope="col">Dosen Pembimbing</th>
                                         <th scope="col">Tanggal Daftar</th>
-                                        <th scope="col">Tanggal Pengajuan</th>
                                         <th scope="col">Status Lomba</th>
-                                        <th scope="col">Status Pengajuan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,8 +40,7 @@
                                         <td>{{ $pendaftaran->lomba->lb_judul }}</td>
                                         <td>{{ $pendaftaran->user->us_nama }}</td>
                                         <td>{{ $pendaftaran->dosen->us_nama }}</td>
-                                        <td>{{ $pendaftaran->pd_tgldaftar }}</td>
-                                        <td>{{ $pendaftaran->pd_tglpengajuan }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pendaftaran->pd_tgldaftar)->format('Y-m-d') }}</td> 
                                         <td>
                                             @if ($pendaftaran->pd_status == 1)
                                                 Menunggu Konfirmasi
@@ -57,24 +54,15 @@
                                                 Babak Semifinal
                                             @elseif ($pendaftaran->pd_status == 6)
                                                 Babak Final
-                                            @elseif ($pendaftaran->pd_status == 6)
+                                            @elseif ($pendaftaran->pd_status == 7)
                                                 Selesai   
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($pendaftaran->pd_statuspengajuan == 1)
-                                                Menunggu Konfirmasi
-                                            @elseif ($pendaftaran->pd_statuspengajuan == 2)                                        
-                                                Diterima
-                                            @elseif ($pendaftaran->pd_statuspengajuan == 3)
-                                                Ditolak
                                             @endif
                                         </td>
                                     </tr>
                                     @empty
                                     <tr>
                                         <td colspan="6">
-                                            No Record Found!
+                                            Data Kosong!
                                         </td>
                                     </tr>
                                     @endforelse
@@ -112,7 +100,7 @@
                         showCancelButton: true,
                         confirmButtonColor: '#d33',
                         cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Yes!'
+                        confirmButtonText: 'Ya!'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             const form = document.getElementById(`delete-row-${userId}`);
@@ -124,6 +112,7 @@
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.js"></script>
     <script>
         $(document).ready(function () {

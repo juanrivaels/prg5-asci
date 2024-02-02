@@ -4,7 +4,6 @@
 
 @section('contents')
     <main id="main" class="main">
-
         <div class="pagetitle">
             <h1>Data Topik</h1>
             <nav>
@@ -29,37 +28,27 @@
                             @endif
 
                             <!-- Table with stripped rows -->
-                            <table class="table table-striped" id="myTable">
+                            <table class="table table-striped compact-table" id="myTable">
                                 <thead>
                                     <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Nama Topik</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Aksi</th>
+                                        <th>No</th>
+                                        <th>Nama Topik</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @php
                                     $i=1;
                                     @endphp
-
                                     @forelse($topik as $topik)
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $topik->tp_nama }}</td>
                                         <td>
-                                        @if ($topik->tp_status == 1)
-                                            Aktif
-                                        @else
-                                            Tidak Aktif
-                                        @endif
-                                        </td>
-                                        <td>
                                             <a href="{{ route('topik.edit', ['id' => $topik->id]) }}"
-                                                class="btn btn-warning ">Edit</a>
+                                                class="btn btn-warning ">Ubah</a>
                                             <a class="btn btm-sm btn-danger delete-btn"
-                                                data-id="{{ $topik->id }}">Delete</a>
+                                                data-id="{{ $topik->id }}">Hapus</a>
                                             <form id="delete-row-{{ $topik->id }}"
                                                 action="{{ route('topik.destroy', ['id' => $topik->id]) }}"
                                                 method="POST">
@@ -72,7 +61,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="10">
-                                            No Record Found!
+                                            Data Kosong!
                                         </td>
                                     </tr>
                                     @endforelse
@@ -110,7 +99,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes!'
+                    confirmButtonText: 'Ya!'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const form = document.getElementById(`delete-row-${userId}`);
@@ -123,11 +112,39 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"></script> <!-- Menambahkan skrip bahasa Indonesia -->
+
 <script>
     $(document).ready(function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "Tidak ada data yang tersedia dalam tabel",
+                "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 entri",
+                "infoFiltered":   "(disaring dari _MAX_ total entri)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Tampilkan _MENU_ entri",
+                "loadingRecords": "Memuat...",
+                "processing":     "Sedang memproses...",
+                "search":         "Cari:",
+                "zeroRecords":    "Tidak ditemukan data yang sesuai",
+                "paginate": {
+                    "first":      "Pertama",
+                    "last":       "Terakhir",
+                    "next":       "Selanjutnya",
+                    "previous":   "Sebelumnya"
+                },
+                "aria": {
+                    "sortAscending":  ": aktifkan untuk mengurutkan kolom secara meningkat",
+                    "sortDescending": ": aktifkan untuk mengurutkan kolom secara menurun"
+                }
+            }
+        });
     });
 </script>
+
 
 <!-- ... (bagian lain dari kode HTML Anda) ... -->
 @endsection

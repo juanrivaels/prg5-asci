@@ -14,6 +14,7 @@ class Sertifikat extends Model
         'sf_idlomba',
         'sf_idpendaftaran',
         'sf_juara',
+        'sf_evaluasi',
         'sf_sertifikat',
         'sf_tanggal',
     ];
@@ -25,10 +26,10 @@ class Sertifikat extends Model
 
     public function lomba()
     {
-        return $this->belongsTo(Lomba::class, 'sf_idlomba');
+        return $this->belongsTo(Lomba::class, 'sf_idlomba', 'id');
     }
-
-    public function pendaftaran()
+    
+    public function pendaftaran() 
     {
         return $this->belongsTo(Pendaftaran::class, 'sf_idpendaftaran');
     }

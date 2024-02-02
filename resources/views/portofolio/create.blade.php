@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Input Portofolio')
+@section('title','Portofolio')
 
 @section('contents')
 
@@ -8,13 +8,13 @@
 <main id="main" class="main">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Input Portofolio</h5>
+            <h5 class="card-title">Portofolio</h5>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <div class="alert-title">
                         <h4>Whoops!</h4>
                     </div>
-                    There are some problems with your input.
+                    Terdapat kesalahan saat ingin menambahkan data!
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -56,10 +56,10 @@
                         <input type="file" class="form-control" name="pfo_file" id="pfo_file" style="width: 100%;">
                     </div>
                 </div>
-            </div>
+                </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-danger">Reset</button>
+                <button type="submit" class="btn btn-primary">Kirim</button>
+                <a href="{{ route('dashboard.index') }}" class="btn btn-secondary">Kembali</a>
             </form>
         </div>
     </div>

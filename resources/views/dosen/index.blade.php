@@ -46,7 +46,7 @@
                                     @empty
                                     <tr>
                                         <td colspan="6">
-                                            No Record Found!
+                                            Data Kosong!
                                         </td>
                                     </tr>
                                     @endforelse

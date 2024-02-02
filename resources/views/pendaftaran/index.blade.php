@@ -27,9 +27,7 @@
                                         <th scope="col">Nama Mahasiswa</th>
                                         <th scope="col">Dosen Pembimbing</th>
                                         <th scope="col">Tanggal Daftar</th>
-                                        <th scope="col">Tanggal Pengajuan</th>
                                         <th scope="col">Status Lomba</th>
-                                        <th scope="col">Status Pengajuan</th>
                                         <th scope="col">Aksi</th>
                     
                                     </tr>
@@ -39,13 +37,13 @@
                                     $i = 1;
                                     @endphp
                                     @forelse($pendaftarans as $pendaftaran)
+                                    @if ($pendaftaran->pd_status != 7)
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $pendaftaran->lomba->lb_judul }}</td>
                                         <td>{{ $pendaftaran->user->us_nama }}</td>
                                         <td>{{ $pendaftaran->dosen->us_nama }}</td>
-                                        <td>{{ $pendaftaran->pd_tgldaftar }}</td>
-                                        <td>{{ $pendaftaran->pd_tglpengajuan }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pendaftaran->pd_tgldaftar)->format('Y-m-d') }}</td> 
                                         <td>
                                             @if ($pendaftaran->pd_status == 1)
                                                 Menunggu Konfirmasi
@@ -64,31 +62,24 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($pendaftaran->pd_statuspengajuan == 1)
-                                                Menunggu Konfirmasi
-                                            @elseif ($pendaftaran->pd_statuspengajuan == 2)                                        
-                                                Diterima
-                                            @elseif ($pendaftaran->pd_statuspengajuan == 3)
-                                                Ditolak
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($pendaftaran->pd_statuspengajuan == 2)
+                                            @if ($pendaftaran->pd_status >= 3 && $pendaftaran->pd_status <= 7)
                                                 <button class="btn btn-info show-competition-info" data-id="{{ $pendaftaran->id }}">Info Lomba</button>
                                             @endif
 
-                                            @if ($pendaftaran->pd_statuspengajuan == 3)
+                                            @if ($pendaftaran->pd_status == 2)
                                                 <button class="btn btn-info show-rejection-reason" data-id="{{ $pendaftaran->id }}">Alasan</button>
                                             @endif
+
                                         </td>
 
-                                        
-
+                        
                                     </tr>
+                                    @endif
+
                                     @empty
                                     <tr>
                                         <td colspan="6">
-                                            No Record Found!
+                                            Data Kosong!
                                         </td>
                                     </tr>
                                     @endforelse
@@ -108,9 +99,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="rejectionReasonModalLabel">Alasan Penolakan</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
                         <p id="rejectionReasonText"></p>
@@ -125,9 +113,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="competitionInfoModalLabel">Info Lomba</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
                         <!-- Display competition information here -->
@@ -240,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes!'
+                confirmButtonText: 'Ya!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Kirim AJAX request untuk mengganti status
@@ -298,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         showCancelButton: true,
                         confirmButtonColor: '#d33',
                         cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Yes!'
+                        confirmButtonText: 'Ya!'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             const form = document.getElementById(`delete-row-${userId}`);

@@ -14,7 +14,7 @@
                 <div class="alert-title">
                     <h4>Whoops!</h4>
                 </div>
-                There are some problems with your input.
+                Terdapat kesalahan saat ingin menambahkan data
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -44,12 +44,12 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="lb_tglmulai">Tanggal Mulai<span style="color: red">*</span></label>
-                <input type="datetime-local" name="lb_tglmulai" id="lb_tglmulai" class="form-control" required>
+                <input type="date" name="lb_tglmulai" id="lb_tglmulai" class="form-control" required>
             </div>
 
             <div class="col-md-6">
                 <label for="lb_tglselesai">Tanggal Selesai<span style="color: red">*</span></label>
-                <input type="datetime-local" name="lb_tglselesai" id="lb_tglselesai" class="form-control" required>
+                <input type="date" name="lb_tglselesai" id="lb_tglselesai" class="form-control" required>
             </div>
         </div>
         <br>
@@ -125,7 +125,7 @@
             <div class="form-group">
             <label for="lb_lokasi">Lokasi<span style="color: red">*</span></label>
             <input name="lb_lokasi" id="lb_lokasi" placeholder="Masukkan Lokasi" class="form-control" required>
-            <small style="color: red">Note:</small> <small>Jika dilaksanakan secara offline, tuliskan nama lokasi pelaksaan lombanya.</small>
+            <small style="color: red">Catatan:</small> <small>Jika dilaksanakan secara offline, tuliskan nama lokasi pelaksaan lombanya.</small>
             </div>
 
             <div class="form-group">
@@ -140,15 +140,14 @@
                 <div class="custom-file" style="width: 100%;">
                     <input type="file" class="form-control" name="lb_gambar" id="lb_gambar" style="width: 100%;">
                 </div>
-                <small style="color: red">Note:</small> <small>Maksimal ukuran gambar 10MB!.</small>
+                <small style="color: red">Catatan:</small> <small>Maksimal ukuran gambar 1MB!.</small>
             </div>
         </div>
         <br>
         <br>
             
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="reset" class="btn btn-danger">Reset</button>
-        <a href="{{ route('topik.index') }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Kirim</button>
+        <a href="{{ route('lomba.index') }}" class="btn btn-secondary">Kembali</a>
  
     </form>
         </div>

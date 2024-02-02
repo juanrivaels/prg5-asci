@@ -6,9 +6,10 @@
 
 <!-- Main -->
 <main id="main" class="main">
+<img src="assets/img/ASCI.png" alt="">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Form Tambah User</h5>
+            <h5 class="card-title">Menu Tambah Pengguna</h5>
             @if ($errors->any())
             <div class="alert alert-danger">
                 <div class="alert-title">
@@ -42,20 +43,20 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <label for="us_username">Username<span style="color: red">*</span></label>
-                    <input name="us_username" id="us_username" placeholder="e.g: NIM / Nama" class="form-control" required>
+                    <label for="us_username">Nama Pengguna<span style="color: red">*</span></label>
+                    <input name="us_username" id="us_username" placeholder="Contoh: NIM / Nama" class="form-control" required>
                 </div>
 
                 <div class="col-md-6">
-                    <label for="us_password">Password<span style="color: red">*</span></label>
-                    <input name="us_password" type="password" id="us_password" placeholder="e.g: 8 Characters" class="form-control" required>
+                    <label for="us_password">Kata Sandi<span style="color: red">*</span></label>
+                    <input name="us_password" type="password" id="us_password" placeholder="Minimal 3 Karakter" class="form-control" required>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
                     <label for="us_noinduk">NIDN/NIM<span style="color: red">*</span></label>
-                    <input name="us_noinduk" id="us_noinduk" placeholder="NIDN/NIM" class="form-control" required>
+                    <input type="number" name="us_noinduk" id="us_noinduk" placeholder="NIDN/NIM" class="form-control" required>
                 </div>
 
                 <div class="col-md-6">
@@ -72,7 +73,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <label for="us_email">E-mail<span style="color: red">*</span></label>
-                    <input type="email" name="us_email" id="us_email" class="form-control" placeholder="e.g: emailaddress@gmail.com" required>
+                    <input type="email" name="us_email" id="us_email" class="form-control" placeholder="Contoh: emailaddress@gmail.com" required>
                     <script th:inline="javascript">
                                     /* JavaScript to validate email format */
                                     document.addEventListener('DOMContentLoaded', function() {
@@ -111,26 +112,25 @@
 
                 <div class="col-md-6">
                     <label for="us_telepon">Nomor Telepon<span style="color: red">*</span></label>
-                    <input type="number" name="us_telepon" id="us_telepon" placeholder="e.g: 08XXXXXXXXXX" class="form-control" required>
+                    <input type="number" name="us_telepon" id="us_telepon" placeholder="Contoh: 08XXXXXXXXXX" class="form-control" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="us_pasfoto">Foto Profile<span style="color: red">*</span></label>
+                <label for="us_pasfoto">Foto Profil</label>
                 <div class="input-group">
                     <div class="custom-file" style="width: 100%;">
                         <input type="file" class="form-control" name="us_pasfoto" id="us_pasfoto" style="width: 100%;">
                     </div>
-                    <small style="color: red">Note:</small> <small>Maksimal ukuran gambar 10MB!.</small>
+                    <small style="color: red">Catatan:</small> <small>Maksimal ukuran gambar 1MB!.</small>
                 </div>
             </div>
 
             <input type="hidden" name="us_status" value="1">
 
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-danger">Reset</button>
-             <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Kirim</button>
+            <button type="reset" class="btn btn-danger">Atur Ulang</button>
  
             </form>
         </div>

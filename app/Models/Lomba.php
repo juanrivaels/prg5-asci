@@ -10,6 +10,7 @@ class Lomba extends Model
     use HasFactory;
 
     protected $fillable = [
+        'lb_iduser',
         'lb_idtopik',
         'lb_judul',
         'lb_tglmulai',

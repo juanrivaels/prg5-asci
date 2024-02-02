@@ -37,7 +37,7 @@ class UpdateLombaRequest extends FormRequest
 
                     // Minimal 7 hari setelah tglmulai
                     if ($tglSelesai <= $tglMulai || ($tglSelesai - $tglMulai) < 7 * 24 * 60 * 60) {
-                        $fail('Tanggal '.$attribute.' selesai minimal 7 hari setelah tanggal mulai.');
+                        $fail('Tanggal selesai minimal 7 hari setelah tanggal mulai.');
                     }
                 },
             ],
@@ -49,7 +49,39 @@ class UpdateLombaRequest extends FormRequest
             'lb_pelaksanaan' => ['required', 'in:0,1'],
             'lb_lokasi' => ['nullable', 'max:255'],
             'lb_deskripsi' => ['required'],
-            'lb_gambar' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:10240'],
+        ];
+    }
+
+        /**
+     * Get custom error messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages()
+    {
+        return [
+            'lb_judul.required' => 'Judul lomba harus diisi.',
+            'lb_judul.max' => 'Judul lomba tidak boleh lebih dari 255 karakter.',
+            'lb_tglmulai.required' => 'Tanggal mulai harus diisi.',
+            'lb_tglmulai.date' => 'Format tanggal mulai tidak valid.',
+            'lb_tglselesai.required' => 'Tanggal selesai harus diisi.',
+            'lb_tglselesai.date' => 'Format tanggal selesai tidak valid.',
+            'lb_tglselesai.not_in' => 'Tanggal selesai tidak boleh sama dengan tanggal mulai.',
+            'lb_tglselesai' => 'Tanggal selesai minimal 7 hari setelah tanggal mulai.',
+            'lb_kategori.required' => 'Kategori lomba harus diisi.',
+            'lb_kategori.in' => 'Pilihan kategori lomba tidak valid.',
+            'lb_idtopik.required' => 'Topik lomba harus diisi.',
+            'lb_idtopik.exists' => 'Topik lomba tidak valid.',
+            'lb_jenis.required' => 'Jenis lomba harus diisi.',
+            'lb_jenis.in' => 'Pilihan jenis lomba tidak valid.',
+            'lb_tingkat.required' => 'Tingkat lomba harus diisi.',
+            'lb_tingkat.in' => 'Pilihan tingkat lomba tidak valid.',
+            'lb_penyelenggara.required' => 'Penyelenggara lomba harus diisi.',
+            'lb_penyelenggara.max' => 'Penyelenggara lomba tidak boleh lebih dari 255 karakter.',
+            'lb_pelaksanaan.required' => 'Pelaksanaan lomba harus diisi.',
+            'lb_pelaksanaan.in' => 'Pilihan pelaksanaan lomba tidak valid.',
+            'lb_lokasi.max' => 'Lokasi lomba tidak boleh lebih dari 255 karakter.',
+            'lb_deskripsi.required' => 'Deskripsi lomba harus diisi.',
         ];
     }
 }

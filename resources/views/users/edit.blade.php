@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Update User')
+@section('title', 'Perbarui User')
 
 @section('contents')
 
@@ -8,14 +8,14 @@
 <main id="main" class="main">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Form Update User</h5>
+            <h5 class="card-title">Form Perbarui User</h5>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <div class="alert-title">
                         <h4>Whoops!</h4>
                     </div>
-                    There are some problems with your input.
+                    Terdapat kesalahan saat ingin menambahkan data
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -44,13 +44,13 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="us_username">Username<span style="color: red">*</span></label>
-                        <input name="us_username" id="us_username" placeholder="e.g: NIM / Nama" class="form-control" value="{{ $user->us_username }}" required readonly>
+                        <label for="us_username">Nama Lengkap / Username<span style="color: red">*</span></label>
+                        <input name="us_username" id="us_username" placeholder="NIM/Nama" class="form-control" value="{{ $user->us_username }}" required readonly>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="us_password">Password<span style="color: red">*</span></label>
-                        <input name="us_password" type="password" id="us_password" placeholder="e.g: 8 Characters" 
+                        <label for="us_password">Kata Sandi<span style="color: red">*</span></label>
+                        <input name="us_password" type="password" id="us_password" placeholder="Minimal 3 Karakter" 
                         value="{{ $user->us_password }}" class="form-control">
                 
                     </div>
@@ -76,7 +76,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="us_email">E-mail<span style="color: red">*</span></label>
-                        <input type="email" name="us_email" id="us_email" class="form-control" placeholder="e.g: emailaddress@gmail.com" value="{{ $user->us_email }}" required>
+                        <input type="email" name="us_email" id="us_email" class="form-control" placeholder="Contoh: emailaddress@gmail.com" value="{{ $user->us_email }}" required>
                         <script th:inline="javascript">
                                     /* JavaScript to validate email format */
                                     document.addEventListener('DOMContentLoaded', function() {
@@ -115,23 +115,12 @@
 
                     <div class="col-md-6">
                         <label for="us_telepon">Nomor Telepon<span style="color: red">*</span></label>
-                        <input type="number" name="us_telepon" id="us_telepon" placeholder="e.g: 08XXXXXXXXXX" class="form-control" value="{{ $user->us_telepon }}" required>
+                        <input type="number" name="us_telepon" id="us_telepon" placeholder="Contoh: 08XXXXXXXXXX" class="form-control" value="{{ $user->us_telepon }}" required>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="us_pasfoto">Foto Profile<span style="color: red">*</span></label>
-                    <div class="input-group">
-                        <div class="custom-file" style="width: 100%;">
-                            <input type="file" class="form-control" name="us_pasfoto" id="us_pasfoto" style="width: 100%;">
-                        </div>
-                        <small style="color: red">Note:</small> <small>Maksimal ukuran gambar 10MB!.</small>
-                    </div>
-                </div>
-
-
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Perbarui</button>
+                <a href="{{ route('users.index') }}" class="btn btn-secondary">Kembali</a>
 
             </form>
         </div>

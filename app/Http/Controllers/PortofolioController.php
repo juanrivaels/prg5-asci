@@ -57,9 +57,9 @@ class PortofolioController extends Controller
         }
     
         if ($porto) {
-            return redirect(route('portofolio.create'))->with('success', 'Added!');
+            return redirect(route('portofolio.create'))->with('success', 'Berhasil menambahkan Portofolio!');
         } else {
-            return redirect(route('portofolio.create'))->with('error', 'Failed to add Portofolio.');
+            return redirect(route('portofolio.create'))->with('error', 'Gagal untuk menambahkan Portofolio.');
         }
     }
 

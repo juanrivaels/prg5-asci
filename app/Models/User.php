@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'us_nama',
         'us_noinduk',
+        'us_idrole',
         'us_role',
         'us_email',
         'us_telepon',
@@ -30,12 +31,23 @@ class User extends Authenticatable
         'us_status',
     ];
 
+    public function hasRole(string $role)
+    {
+        // Implementasi sesuai dengan struktur role pada aplikasi Anda
+        return $this->us_role === $role;
+    }
+
     public function users(){
         return $this->belongsToMany(Lomba::class);
     }
 
     public function lombas(){
         return $this->belongsToMany(Pendaftaran::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'us_idrole');
     }
 
     /**

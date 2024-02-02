@@ -6,7 +6,7 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Data Pendaftaran</h1>
+            <h1>Data Pendaftaran Lomba</h1>
             <nav>
             </nav>
         </div><!-- End Page Title -->
@@ -27,8 +27,7 @@
                                         <th scope="col">Nama Mahasiswa</th>
                                         <th scope="col">Dosen Pembimbing</th>
                                         <th scope="col">Tanggal Daftar</th>
-                                        <th scope="col">Tanggal Pengajuan</th>
-                                        <th scope="col">Status Pengajuan</th>
+                                        <th scope="col">Status Lomba</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
                                 </thead>
@@ -42,35 +41,48 @@
                                         <td>{{ $pendaftaran->lomba->lb_judul }}</td>
                                         <td>{{ $pendaftaran->user->us_nama }}</td>
                                         <td>{{ $pendaftaran->dosen->us_nama }}</td>
-                                        <td>{{ $pendaftaran->pd_tgldaftar }}</td>
-                                        <td>{{ $pendaftaran->pd_tglpengajuan }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pendaftaran->pd_tgldaftar)->format('Y-m-d') }}</td>   
                                         <td>
-                                            @if ($pendaftaran->pd_statuspengajuan == 1)
+                                            @if ($pendaftaran->pd_status == 1)
                                                 Menunggu Konfirmasi
-                                            @elseif ($pendaftaran->pd_statuspengajuan == 2)                                        
-                                                Diterima
-                                            @elseif ($pendaftaran->pd_statuspengajuan == 3)
+                                            @elseif ($pendaftaran->pd_status == 2)                                        
                                                 Ditolak
+                                            @elseif ($pendaftaran->pd_status == 3)
+                                                Diterima
+                                            @elseif ($pendaftaran->pd_status == 4)
+                                                Babak Penyisihan
+                                            @elseif ($pendaftaran->pd_status == 5)
+                                                Babak Semifinal
+                                            @elseif ($pendaftaran->pd_status == 6)
+                                                Babak Final
+                                            @elseif ($pendaftaran->pd_status == 7)
+                                                Selesai   
                                             @endif
                                         </td>
 
                                         <td>
-                                            <a class="btn btn-sm btn-success accept-btn" data-id="{{ $pendaftaran->id }}">Terima Pengajuan</a>
+                                            <a class="btn btn-sm btn-success accept-btn" data-id="{{ $pendaftaran->id }}">
+                                                <i class="bi bi-check-lg"></i>
+                                            </a>
                                             <form id="accept-row-{{ $pendaftaran->id }}" action="{{ route('pendaftaran.editdosen', ['id' => $pendaftaran->id]) }}" method="POST">
                                                 <input type="hidden" name="_method" value="GET">
                                                 @csrf
                                             </form>
-                                            <a class="btn btn-sm btn-danger delete-btn reject-btn" data-id="{{ $pendaftaran->id }}">Tolak Pengajuan</a>
-                                            <form id="delete-row-{{ $pendaftaran->id }}" action="{{ route('pendaftaran.destroy', ['id' => $pendaftaran->id]) }}" method="POST">
+
+                                            <a class="btn btn-sm btn-danger delete-btn reject-btn" data-id="{{ $pendaftaran->id }}">
+                                                <i class="bi bi-x-lg"></i>
+                                            </a>
+                                            <form id="delete-row-{{ $pendaftaran->id }}" action="{{ route('pendaftaran.destroylomba', ['id' => $pendaftaran->id]) }}" method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 @csrf
                                             </form>
                                         </td>
+
                                     </tr>
                                     @empty
                                     <tr>
                                         <td colspan="6">
-                                            No Record Found!
+                                            Data Kosong!
                                         </td>
                                     </tr>
                                     @endforelse
@@ -102,12 +114,12 @@
                 const pendaftaranId = this.getAttribute('data-id');
 
                 Swal.fire({
-                    title: 'Yakin Terima Pengajuan?',
+                    title: 'Yakin Terima Lomba?',
                     icon: 'info',
                     showCancelButton: true,
                     confirmButtonColor: '#28a745',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes!'
+                    confirmButtonText: 'Ya!'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // You can perform additional actions here before submitting the form
@@ -137,7 +149,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Tolak Pengajuan'
+                    confirmButtonText: 'Tolak Lomba'
                 }).then((result) => {
                     if (result.isConfirmed && result.value.trim() !== '') {
                         // You can perform additional actions here before submitting the form

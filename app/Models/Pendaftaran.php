@@ -13,7 +13,6 @@ class Pendaftaran extends Model
         'pd_userid',
         'pd_iddosen',
         'pd_idlomba',
-        'pd_idsertifikat',
         'pd_tgldaftar',
         'pd_status',
         'pd_alasan',
@@ -21,6 +20,7 @@ class Pendaftaran extends Model
         'pd_tglpengajuan',
         'pd_statuspengajuan',
     ];
+
 
     public function user()
     {

@@ -28,25 +28,24 @@
     </header><!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
-  <ul class="sidebar-nav" id="sidebar-nav">
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard.index') }}">
-            <i class="bi bi-house"></i> 
-            <span>Dashboard</span>
-        </a>
-    </li>
+        <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('dashboard.index') }}">
+                <i class="bi bi-house"></i> 
+                <span>Dashboard</span>
+            </a>
+        </li>
 
-    @if(session('user.role') == 'Admin' || session('user.role') == 'Himma' || session('user.role') == 'Dosen')
-    <li class="nav-heading">Halaman Master</li>
-    @endif
+        @if(session('user.role') == 'Admin' || session('user.role') == 'Himma' || session('user.role') == 'Dosen')
+        <li class="nav-heading">Halaman Master</li>
+        @endif
 
-            <!-- User Page Nav (only visible for "Admin") -->
             @if(session('user.role') == 'Admin' )
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="{{ route('users.index') }}">
                         <i class="bi bi-person-plus-fill"></i>
-                        <span>Data User</span>
+                        <span>Data Akun</span>
                     </a>
                 </li><!-- End Profile Page Nav -->
             @endif
@@ -98,7 +97,7 @@
 
         @if(session('user.role') == 'Admin' || session('user.role') == 'Himma' || session('user.role') == 'Dosen')
             <li class="nav-item">
-                @if(session('user.role') == 'Admin')
+                @if(session('user.role') == 'Admin' || session('user.role') == 'Himma'  )
                     <a class="nav-link collapsed" href="{{ route('pendaftaran.indexadmin') }}">
                 @elseif(session('user.role') == 'Dosen')
                     <a class="nav-link collapsed" href="{{ route('pendaftaran.indexdosen') }}">
@@ -106,33 +105,73 @@
                     <a class="nav-link collapsed" href="{{ route('pendaftaran.index') }}">
                 @endif
                     <i class="bi bi-bookmark-check-fill"></i>
-                    <span>Data Pendaftaran</span>
+                    <span>Data Pendaftaran Lomba</span>
                 </a>
             </li><!-- End Data Pendaftaran Page Nav -->
-        @if(session('user.role') == 'Dosen')
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ route('dosen.index') }}">
-                        <i class="bi bi-bookmark-check-fill"></i>
-                        <span>Data Pengajuan</span>
-                    </a>
-                </li><!-- End Contact Page Nav -->
-                @endif
             @endif
 
         @if(session('user.role') == 'Admin' || session('user.role') == 'Himma')
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="/viewSertifikat">
+                    <a class="nav-link collapsed" href="{{ route('pendaftaran.indexsertifikat') }}">
                         <i class="bi bi-cloud-arrow-up-fill"></i>
                         <span>Sertifikat Lomba</span>
                     </a>
                 </li><!-- End Error 404 Page Nav -->
             @endif
 
+        @if(session('user.role') == 'Dosen')
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('pengajuan.indexpengajuandosen') }}">
+                        <i class="bi bi-cloud-arrow-up-fill"></i>
+                        <span>Data Pengajuan Bimbingan</span>
+                    </a>
+                </li><!-- End Error 404 Page Nav -->
+
+                <li class="nav-heading">Halaman Laporan</li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('pendaftaran.laporan') }}">
+                        <i class="bi bi-clipboard-data-fill"></i>
+                        <span>Histori Lomba</span>
+                    </a>
+                </li><!-- End Register Page Nav -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('pengajuan.indexhistori') }}">
+                        <i class="bi bi-bookmark-check-fill"></i>
+                        <span>Riwayat Pengajuan</span>
+                    </a>
+                </li><!-- End Error 404 Page Nav -->
+        @endif
+
+        @if(session('user.role') == 'Sekprod')
+
+                <li class="nav-heading">Halaman Laporan</li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('pendaftaran.laporan') }}">
+                        <i class="bi bi-clipboard-data-fill"></i>
+                        <span>Histori Lomba</span>
+                    </a>
+                </li><!-- End Register Page Nav -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('pendaftaran.indexsertifikat') }}">
+                        <i class="bi bi-cloud-arrow-up-fill"></i>
+                        <span>Sertifikat Lomba</span>
+                    </a>
+                </li><!-- End Error 404 Page Nav -->    
+        @endif
+
         @if(session('user.role') == 'Mahasiswa')
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="{{ route('pendaftaran.create') }}">
                         <i class="bi bi-star-fill"></i>
                         <span>Pendaftaran Lomba</span>
+                    </a>
+                </li><!-- End Error 404 Page Nav -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('pengajuan.create') }}">
+                        <i class="bi bi-bookmark-check-fill"></i>
+                        <span>Pengajuan Bimbingan</span>
                     </a>
                 </li><!-- End Error 404 Page Nav -->
             @endif
@@ -144,10 +183,15 @@
                         <span>Informasi Lomba</span>
                     </a>
                 </li><!-- End Error 404 Page Nav -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('pengajuan.index') }}">
+                        <i class="bi bi-bookmark-check-fill"></i>
+                        <span>Informasi Bimbingan</span>
+                    </a>
+                </li><!-- End Error 404 Page Nav -->
             @endif
             
         @if(session('user.role') == 'Mahasiswa')
-
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="{{ route('minat.create') }}">
                     <i class="bi bi-file-earmark-person"></i>
@@ -169,8 +213,6 @@
                     </a>
                 </li><!-- End Error 404 Page Nav -->
             @endif
-
-
             <!-- Laporan Page Nav (only visible for "Admin") -->
         @if(session('user.role') == 'Admin')
                 <li class="nav-heading">Halaman Laporan</li>
@@ -182,12 +224,12 @@
                 </li><!-- End Register Page Nav -->
             @endif
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('auth.login') }}">
-            <i class="bi bi-box-arrow-left"></i>
-            <span>Keluar</span>
-        </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('auth.login') }}">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Keluar</span>
+            </a>
+        </li>
 </ul>
 
 </aside><!-- End Sidebar-->

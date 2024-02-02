@@ -39,7 +39,6 @@
                                         <th scope="col">Pelaksanaan</th>
                                         <th scope="col">Lokasi</th>
                                         <th scope="col">Foto Lomba</th>
-                                        <th scope="col">Status</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
                                 </thead>
@@ -49,12 +48,12 @@
                                     $i=1;
                                     @endphp
 
-                                    @forelse($lombas as $lomba)
+                                    @forelse($lombas->where('lb_status', 1) as $lomba)
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $lomba->lb_judul }}</td>
-                                        <td>{{ $lomba->lb_tglmulai }}</td>
-                                        <td>{{ $lomba->lb_tglselesai }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($lomba->lb_tglmulai)->format('Y-m-d') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($lomba->lb_tglselesai)->format('Y-m-d') }}</td>
                                         <td>{{ $lomba->topik->tp_nama }}</td>
                                         <td>{{ $lomba->lb_lokasi }}</td>
                                         <td>
@@ -62,17 +61,10 @@
                                                 style="width: 40px;">
                                         </td>
                                         <td>
-                                        @if ($lomba->lb_status == 1)
-                                            Aktif
-                                        @else
-                                            Tidak Aktif
-                                        @endif
-                                        </td>
-                                        <td>
                                             <a href="{{ route('lomba.edit', ['id' => $lomba->id]) }}"
-                                                class="btn btn-warning ">Edit</a>
+                                                class="btn btn-warning ">Ubah</a>
                                             <a class="btn btm-sm btn-danger delete-btn"
-                                                data-id="{{ $lomba->id }}">Delete</a>
+                                                data-id="{{ $lomba->id }}">Hapus</a>
                                             <form id="delete-row-{{ $lomba->id }}"
                                                 action="{{ route('lomba.destroy', ['id' => $lomba->id]) }}"
                                                 method="POST">
@@ -84,7 +76,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="14">
-                                            No Record Found!
+                                            Data Kosong!
                                         </td>
                                     </tr>
                                     @endforelse
@@ -135,9 +127,36 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"></script> <!-- Menambahkan skrip bahasa Indonesia -->
+
 <script>
     $(document).ready(function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "Tidak ada data yang tersedia dalam tabel",
+                "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 entri",
+                "infoFiltered":   "(disaring dari _MAX_ total entri)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Tampilkan _MENU_ entri",
+                "loadingRecords": "Memuat...",
+                "processing":     "Sedang memproses...",
+                "search":         "Cari:",
+                "zeroRecords":    "Tidak ditemukan data yang sesuai",
+                "paginate": {
+                    "first":      "Pertama",
+                    "last":       "Terakhir",
+                    "next":       "Selanjutnya",
+                    "previous":   "Sebelumnya"
+                },
+                "aria": {
+                    "sortAscending":  ": aktifkan untuk mengurutkan kolom secara meningkat",
+                    "sortDescending": ": aktifkan untuk mengurutkan kolom secara menurun"
+                }
+            }
+        });
     });
 </script>
 

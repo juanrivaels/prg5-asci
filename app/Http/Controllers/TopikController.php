@@ -27,9 +27,9 @@ class TopikController extends Controller
         $topik = Topik::create($params);
 
         if ($topik) {
-            return redirect(route('topik.index'))->with('success', 'Added!');
+            return redirect(route('topik.index'))->with('success', 'Berhasil menambahkan Topik!');
         } else {
-            return redirect(route('topik.index'))->with('error', 'Failed to add topik.');
+            return redirect(route('topik.index'))->with('error', 'Gagal untuk menambahkan topik.');
         }
     }
 
@@ -46,9 +46,9 @@ class TopikController extends Controller
 
         // Update topik data
         if ($topik->update($params)) {
-            return redirect(route('topik.index'))->with('success', 'Updated!');
+            return redirect(route('topik.index'))->with('success', 'Berhasil perbarui Topik!');
         } else {
-            return redirect(route('topik.index'))->with('error', 'Failed to update topik.');
+            return redirect(route('topik.index'))->with('error', 'Gagal untuk perbarui topik.');
         }
     }
 
@@ -56,8 +56,8 @@ class TopikController extends Controller
     {
         $topik = Topik::findOrFail($id);
 
-        $topik->update(['tp_status' => '0']);
+        $topik->update(['tp_status' => 0]);
 
-        return redirect(route('topik.index'))->with('success', 'Topik marked as inactive!');
+        return redirect(route('topik.index'))->with('success', 'Berhasil menghapus Topik!');
     }
 }

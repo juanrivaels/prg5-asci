@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Menu User')
+@section('title', 'Menu Pengguna')
 
 @section('contents')
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Data User</h1>
+            <h1>Data Pengguna</h1>
             <nav>
             </nav>
         </div><!-- End Page Title -->
@@ -14,7 +14,6 @@
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
-
                     <div class="card">
                         <div class="card-body ">
                             <h5 class="card-title d-flex justify-content">
@@ -38,19 +37,15 @@
                                         <th scope="col">Role</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">No Telepon</th>
-                                        <th scope="col">Username</th>
                                         <th scope="col">Pas Foto</th>
-                                        <th scope="col">Status</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @php
                                     $i=1;
                                     @endphp
-
-                                    @forelse($users as $user)
+                                    @forelse($users->where('us_status', 1) as $user)
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $user->us_nama }}</td>
@@ -58,22 +53,14 @@
                                         <td>{{ $user->us_role }}</td>
                                         <td>{{ $user->us_email }}</td>
                                         <td>{{ $user->us_telepon }}</td>
-                                        <td>{{ $user->us_username }}</td>
                                         <td>
                                         <img src="{{ asset('pasfoto/'.$user->us_pasfoto) }}" alt="" style="width: 40px;">
                                         </td>
                                         <td>
-                                        @if ($user->us_status == 1)
-                                            Aktif
-                                        @else
-                                            Tidak Aktif
-                                        @endif
-                                        </td>
-                                        <td>
                                             <a href="{{ route('users.edit', ['id' => $user->id]) }}"
-                                                class="btn btn-warning ">Edit</a>
+                                                class="btn btn-warning ">Ubah</a>
                                             <a class="btn btm-sm btn-danger delete-btn"
-                                                data-id="{{ $user->id }}">Delete</a>
+                                                data-id="{{ $user->id }}">Hapus</a>
                                             <form id="delete-row-{{ $user->id }}"
                                                 action="{{ route('users.destroy', ['id' => $user->id]) }}"
                                                 method="POST">
@@ -86,7 +73,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="10">
-                                            No Record Found!
+                                            Data Kosong!
                                         </td>
                                     </tr>
                                     @endforelse
@@ -124,7 +111,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes!'
+                    confirmButtonText: 'Ya!'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const form = document.getElementById(`delete-row-${userId}`);
@@ -137,9 +124,36 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"></script> <!-- Menambahkan skrip bahasa Indonesia -->
+
 <script>
     $(document).ready(function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "Tidak ada data yang tersedia dalam tabel",
+                "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 entri",
+                "infoFiltered":   "(disaring dari _MAX_ total entri)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Tampilkan _MENU_ entri",
+                "loadingRecords": "Memuat...",
+                "processing":     "Sedang memproses...",
+                "search":         "Cari:",
+                "zeroRecords":    "Tidak ditemukan data yang sesuai",
+                "paginate": {
+                    "first":      "Pertama",
+                    "last":       "Terakhir",
+                    "next":       "Selanjutnya",
+                    "previous":   "Sebelumnya"
+                },
+                "aria": {
+                    "sortAscending":  ": aktifkan untuk mengurutkan kolom secara meningkat",
+                    "sortDescending": ": aktifkan untuk mengurutkan kolom secara menurun"
+                }
+            }
+        });
     });
 </script>
 

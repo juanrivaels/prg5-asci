@@ -14,31 +14,32 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function loginAction(Request $request){
-        $user = User::where('us_username', $request->input('Username'))->first();
-
-        session(['user.id' => $user->id]); 
-        session(['user.name' => $user->us_nama]);
-        session(['user.email' => $user->us_email]);
-        session(['user.us_pasfoto' => $user->us_pasfoto]);
-        session(['user.role' => $user->us_role]);
+    public function loginAction(Request $request)
+    {
+        $username = $request->input('Username');
+        $password = $request->input('Password');
     
-        if($user && $user->us_password == $request->input('Password')){
+        $user = User::where('us_username', $username)->first();
+    
+        if ($user && $user->us_password == $password && $user->us_status == 1) {
+            session(['user.id' => $user->id]); 
+            session(['user.name' => $user->us_nama]);
+            session(['user.email' => $user->us_email]);
+            session(['user.us_pasfoto' => $user->us_pasfoto]);
+            session(['user.role' => $user->us_role]);
+    
             $role = $user->us_role;
     
-            if($role == 'Admin'){
-                return redirect(route('dashboard.index'));
-            } elseif($role == 'Himma'){
-                return redirect(route('dashboard.index'));
-            } elseif($role == 'Dosen'){
-                return redirect(route('dashboard.index'));
-            } elseif($role == 'Mahasiswa'){
+            if ($role == 'Admin' || $role == 'Himma' || $role == 'Dosen' || $role == 'Mahasiswa'|| $role == 'Sekprod') {
                 return redirect(route('dashboard.index'));
             } else {
                 // Handle other roles or scenarios
             }
+        } elseif ($user && $user->us_status == 0) {
+            return redirect(route('auth.login'))->with('error', 'Akun nonaktif.');
         } else {
-            return redirect(route('auth.login'))->with('error', 'Wrong username or password!');
+            return redirect(route('auth.login'))->with('error', 'Nama Pengguna atau Kata Sandi salah!');
         }
     }
+    
 }

@@ -12,8 +12,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('users.index', ['users' => $users]);
+        return view('users.index', [ 'users' => $users]);
     }
+    
 
      public function searchMahasiswa(Request $request)
     {
@@ -36,6 +37,7 @@ class UserController extends Controller
         $params = $request->validated();
     
         $params['us_status'] = 1;
+        //$params['us_password'] = bcrypt($request->us_password);
     
         $user = User::create($params);
         
@@ -46,15 +48,16 @@ class UserController extends Controller
         }
     
         if ($user) {
-            return redirect(route('users.index'))->with('success', 'Added!');
+            return redirect(route('users.index'))->with('success', 'Berhasil menambahkan pengguna!');
         } else {
-            return redirect(route('users.index'))->with('error', 'Failed to add user.');
+            return redirect(route('users.index'))->with('error', 'Gagal untuk menambahkan pengguna');
         }
     }
     
 
     public function edit($id)
     {
+
         $user = User::findOrFail($id);
         return view('users.edit', ['user' => $user]);
     }
@@ -73,9 +76,9 @@ class UserController extends Controller
                 $user->save();
             }
 
-            return redirect(route('users.index'))->with('success', 'Updated!');
+            return redirect(route('users.index'))->with('success', 'Berhasil diperbarui!');
         } else {
-            return redirect(route('users.index'))->with('error', 'Failed to update user.');
+            return redirect(route('users.index'))->with('error', 'Gagal untuk update pengguna.');
         }
     }
 
@@ -83,8 +86,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $user->update(['us_status' => '0']);
+        $user->update(['us_status' => 0]);
 
-        return redirect(route('users.index'))->with('success', 'User marked as inactive!');
+        return redirect(route('users.index'))->with('success', 'Berhasil menghapus pengguna!');
     }
 }

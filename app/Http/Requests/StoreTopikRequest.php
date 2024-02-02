@@ -27,4 +27,17 @@ class StoreTopikRequest extends FormRequest
             'tp_nama' => ['required', 'max:100'],
         ];
     }
+
+        /**
+     * Get custom error messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages()
+    {
+        return [
+            'tp_nama.required' => 'Nama topik harus diisi.',
+            'tp_nama.max' => 'Nama topik tidak boleh lebih dari 100 karakter.',
+        ];
+    }
 }

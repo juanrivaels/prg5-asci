@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class StorePendaftaranRequest extends FormRequest
 {
     /**
@@ -27,7 +27,11 @@ class StorePendaftaranRequest extends FormRequest
             'pd_userid' => 'required|exists:users,id',
             'pd_idlomba' => 'required|exists:lombas,id',
             'pd_iddosen' => 'required|exists:users,id',
-            'pd_tgldaftar' => 'required|date',
+            'pd_tgldaftar' => [
+                'required',
+                'date',
+
+            ],
             'pd_alasan' => 'nullable',
             'pd_buktistatus' => 'nullable',
             'pd_tglpengajuan' => 'nullable|date',

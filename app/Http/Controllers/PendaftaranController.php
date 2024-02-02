@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PDF;
+use DB;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StorePendaftaranRequest;
 use App\Http\Requests\UpdatePendaftaranRequest;
 use App\Models\Pendaftaran;
 use App\Models\Sertifikat;
 use App\Models\User;
 use App\Models\Lomba;
+
 
 class PendaftaranController extends Controller
 {
@@ -68,6 +72,22 @@ class PendaftaranController extends Controller
         return view('pendaftaran.indexdosen', compact('pendaftarans', 'lombas', 'users'));
     }
 
+    public function indexpengajuandosen()
+    {
+        // Ambil informasi pengguna yang sedang login dari session
+        $loggedInUserId = session('user.id');
+
+        // Mengambil data pendaftaran hanya untuk pengguna yang sedang login
+        $pendaftarans = Pendaftaran::where('pd_iddosen', $loggedInUserId)
+            ->with('lomba', 'user', 'dosen') // Pastikan untuk mengambil relasi yang diperlukan
+            ->get();
+
+        $users = User::all();
+        $lombas = Lomba::all();
+
+        return view('pendaftaran.indexpengajuandosen', compact('pendaftarans', 'lombas', 'users'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -79,6 +99,46 @@ class PendaftaranController extends Controller
         $lombas = Lomba::all();
 
         return view('pendaftaran.create', ['lombas' => $lombas] , ['users' => $users]);
+    }
+
+    public function downloadFile($file){
+        $path = '../public/sertifikat/'.$file;
+        return response()->download($path, $file);
+    }
+
+    public function evaluasi($id, Request $request)
+    {
+        $pendaftaran = Pendaftaran::findOrFail($id);
+
+        $pendaftaran->pd_summary = $request->input('pd_summary');
+        $pendaftaran->save();
+
+        return redirect()->route('pendaftaran.index')->with('success', 'Berhasil!');
+    }
+    
+
+    
+    public function createpengajuan($id)
+{
+    // Assuming you have a model named 'Pengajuan' or adjust it based on your model name
+    $existingPengajuan = Pendaftaran::findOrFail($id);
+
+    // Assuming you have other data needed for the form
+    $users = User::where('us_role', 'Dosen')->get();
+    $pendaftarans = Pendaftaran::all();
+
+    return view('pendaftaran.createpengajuan', compact('existingPengajuan', 'users', 'pendaftarans'));
+}
+
+    public function getDosenByLomba($id)
+    {
+        $dosenByLomba = DB::table('pendaftarans')
+            ->join('users', 'pendaftarans.pd_iddosen', '=', 'users.id')
+            ->where('pd_idlomba', $id)
+            ->pluck('us_nama', 'users.id')
+            ->toArray();
+
+        return response()->json($dosenByLomba);
     }
 
     public function createsertifikat()
@@ -98,6 +158,15 @@ class PendaftaranController extends Controller
         //return view('sertifikat.create', ['lombas' => $lombas] , ['users' => $users] , ['pendaftarans' => $pendaftarans]);
     }
 
+    public function indexsertifikat()
+    {
+        $pendaftarans = Pendaftaran::all();
+        $users = User::all();
+        $lombas = Lomba::all();
+        $sertifikats = Sertifikat::all();
+
+        return view('pendaftaran.indexsertifikat', compact('pendaftarans', 'lombas', 'users', 'sertifikats'));
+    }
 
     public function storesertifikat(Request $request)
     {
@@ -118,9 +187,9 @@ class PendaftaranController extends Controller
         }
     
         if ($sertif) {
-            return redirect(route('pendaftaran.createsertifikat'))->with('success', 'Added!');
+            return redirect(route('pendaftaran.createsertifikat'))->with('success', 'Berhasil menambahkan Sertifitkat!');
         } else {
-            return redirect(route('pendaftaran.createsertifikat'))->with('error', 'Failed to add Sertifikat.');
+            return redirect(route('pendaftaran.createsertifikat'))->with('error', 'Gagal untuk menambahkan Sertifikat.');
         }
     }
 
@@ -134,15 +203,41 @@ class PendaftaranController extends Controller
     {
         $params = $request->validated();
         $params['pd_status'] = 1;
-        $params['pd_statuspengajuan'] = 1;
+        //$params['pd_statuspengajuan'] = 1;
         $pendaftaran = Pendaftaran::create($params);
 
         if ($pendaftaran) {
-            return redirect(route('pendaftaran.create'))->with('success', 'Added!');
+            return redirect(route('pendaftaran.create'))->with('success', 'Berhasil menambahkan Pendaftaran');
         } else {
-            return redirect(route('pendaftaran.create'))->with('error', 'Failed to add Pendaftaran.');
+            return redirect(route('pendaftaran.create'))->with('error', 'Gagal untuk menambahkan Pendaftaran.');
         }
     }
+
+    public function storepengajuan(Request $request, $id)
+    {
+        // Validate the form data
+        $request->validate([
+            // Add validation rules for your fields
+            'pd_idlomba' => 'required',
+            'pd_iddosen' => 'required',
+            'pd_tglpengajuan' => 'required|date',
+        ]);
+
+        // Find the existing pengajuan
+        $pengajuan = Pendaftaran::findOrFail($id);
+
+        // Update the pengajuan with the form data
+        $pengajuan->update([
+            'pd_idlomba' => $request->input('pd_idlomba'),
+            'pd_iddosen' => $request->input('pd_iddosen'),
+            'pd_tglpengajuan' => $request->input('pd_tglpengajuan'),
+            'pd_statuspengajuan' => 1,
+        ]);
+
+        // Redirect to a route or page after successful update
+        return redirect()->route('pendaftaran.createpengajuan', ['id' => $pengajuan->id])->with('success', 'Berhasil membuat pengajuan!');
+    }
+
 
     /**
      * Display the specified resource.
@@ -165,17 +260,29 @@ class PendaftaranController extends Controller
     {
         //
     }
-
-    
+ 
     public function editdosen($id)
     {
         $pendaftaran = Pendaftaran::findOrFail($id);
 
-        $pendaftaran->pd_statuspengajuan = 2; 
+        //$pendaftaran->pd_statuspengajuan = 2; 
         $pendaftaran->pd_status = 3;
         $pendaftaran->save();
 
         return redirect()->route('pendaftaran.indexdosen')->with('success', 'Pengajuan diterima');
+    }
+
+
+
+    public function editpengajuandosen($id)
+    {
+        $pendaftaran = Pendaftaran::findOrFail($id);
+
+        $pendaftaran->pd_statuspengajuan = 2; 
+        //$pendaftaran->pd_status = 3;
+        $pendaftaran->save();
+
+        return redirect()->route('pendaftaran.indexpengajuandosen')->with('success', 'Pengajuan diterima');
     }
 
     public function statuspenyisihan($id)
@@ -249,6 +356,24 @@ class PendaftaranController extends Controller
         return response()->json(['message' => 'Status berhasil diubah.']);
     }
 
+    public function getInfo($id)
+    {
+    // Ambil data berdasarkan ID
+    $pendaftaran = Pendaftaran::find($id);
+
+    // Pastikan data ditemukan
+    if (!$pendaftaran) {
+        return response()->json(['error' => 'Data not found'], 404);
+    }
+
+    // Kirim data sebagai JSON
+    return response()->json([
+        'lomba' => $pendaftaran->lomba->lb_judul,
+        'pd_status' => $pendaftaran->pd_status,
+        // tambahkan data lain yang diperlukan
+    ]);
+    }
+
     public function updateStatus($id, $status)
 {
     $pendaftaran = Pendaftaran::findOrFail($id);
@@ -299,6 +424,18 @@ class PendaftaranController extends Controller
 
         // Assuming you have a 'statuspengajuan' column in your 'pendaftarans' table
         $pendaftaran->pd_statuspengajuan = 3;
+        $pendaftaran->pd_alasan = $request->input('pd_alasan');
+        $pendaftaran->save();
+
+        return redirect()->route('pendaftaran.indexdosen')->with('success', 'Pengajuan ditolak');
+    }
+
+    public function destroylomba($id, Request $request)
+    {
+        $pendaftaran = Pendaftaran::findOrFail($id);
+
+        // Assuming you have a 'statuspengajuan' column in your 'pendaftarans' table
+        $pendaftaran->pd_status = 2;
         $pendaftaran->pd_alasan = $request->input('pd_alasan');
         $pendaftaran->save();
 

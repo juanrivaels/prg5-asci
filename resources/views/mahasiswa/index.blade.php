@@ -38,9 +38,7 @@
                                         <th scope="col">Role</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">No Telepon</th>
-                                        <th scope="col">Username</th>
                                         <th scope="col">Pas Foto</th>
-                                        <th scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,23 +56,15 @@
                                                 <td>{{ $user->us_role }}</td>
                                                 <td>{{ $user->us_email }}</td>
                                                 <td>{{ $user->us_telepon }}</td>
-                                                <td>{{ $user->us_username }}</td>
                                                 <td>
                                                     <img src="{{ asset('pasfoto/'.$user->us_pasfoto) }}" alt="" style="width: 40px;">
-                                                </td>
-                                                <td>
-                                                    @if ($user->us_status == 1)
-                                                        Aktif
-                                                    @else
-                                                        Tidak Aktif
-                                                    @endif
                                                 </td>
                                             </tr>
                                         @endif
                                     @empty
                                         <tr>
                                             <td colspan="10">
-                                                No Record Found!
+                                                Data Kosong!
                                             </td>
                                         </tr>
                                     @endforelse
@@ -125,9 +115,36 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"></script> <!-- Menambahkan skrip bahasa Indonesia -->
+
 <script>
     $(document).ready(function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "Tidak ada data yang tersedia dalam tabel",
+                "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 entri",
+                "infoFiltered":   "(disaring dari _MAX_ total entri)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Tampilkan _MENU_ entri",
+                "loadingRecords": "Memuat...",
+                "processing":     "Sedang memproses...",
+                "search":         "Cari:",
+                "zeroRecords":    "Tidak ditemukan data yang sesuai",
+                "paginate": {
+                    "first":      "Pertama",
+                    "last":       "Terakhir",
+                    "next":       "Selanjutnya",
+                    "previous":   "Sebelumnya"
+                },
+                "aria": {
+                    "sortAscending":  ": aktifkan untuk mengurutkan kolom secara meningkat",
+                    "sortDescending": ": aktifkan untuk mengurutkan kolom secara menurun"
+                }
+            }
+        });
     });
 </script>
 

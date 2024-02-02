@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Update Topik')
+@section('title', 'Perbarui Topik')
 
 @section('contents')
 
@@ -8,14 +8,13 @@
 <main id="main" class="main">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Form Update Topik</h5>
-
+            <h5 class="card-title">Form Perbarui Topik</h5>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <div class="alert-title">
                         <h4>Whoops!</h4>
                     </div>
-                    There are some problems with your input.
+                    Terdapat kesalahan saat ingin menambahkan data!
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -42,8 +41,8 @@
                 <input name="tp_nama" id="tp_nama" placeholder="Nama Topik" class="form-control" value="{{ $topik->tp_nama }}" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="{{ route('topik.index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Perbarui</button>
+                <button type="reset" class="btn btn-danger">Atur Ulang</button>
 
             </form>
         </div>

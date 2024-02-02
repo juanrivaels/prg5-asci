@@ -45,7 +45,9 @@ class LombaController extends Controller
         
         // Menetapkan nilai us_status secara eksplisit
         $params['lb_status'] = 1;
-    
+
+        $params['lb_iduser'] = session('user.id');
+
         $lomba = Lomba::create($params);
         
         if($request->hasFile('lb_gambar')){
@@ -55,9 +57,9 @@ class LombaController extends Controller
         }
     
         if ($lomba) {
-            return redirect(route('lomba.index'))->with('success', 'Added!');
+            return redirect(route('lomba.index'))->with('success', 'Berhasil menambahkan Lomba!');
         } else {
-            return redirect(route('lomba.index'))->with('error', 'Failed to add lomba.');
+            return redirect(route('lomba.index'))->with('error', 'Gagal untuk menambahkan Lomba');
         }
     }
 
@@ -106,9 +108,9 @@ class LombaController extends Controller
                 $lomba->save();
             }
 
-            return redirect(route('lomba.index'))->with('success', 'Updated!');
+            return redirect(route('lomba.index'))->with('success', 'Berhasil memperbarui lomba!');
         } else {
-            return redirect(route('lomba.index'))->with('error', 'Failed to update lomba.');
+            return redirect(route('lomba.index'))->with('error', 'Gagal untuk perbarui Lomba.');
         }
     }
 
@@ -122,8 +124,8 @@ class LombaController extends Controller
     {
         $lomba = Lomba::findOrFail($id);
 
-        $lomba->update(['lb_status' => '0']);
+        $lomba->update(['lb_status' => 0]);
 
-        return redirect(route('lomba.index'))->with('success', 'Lomba marked as inactive!');
+        return redirect(route('lomba.index'))->with('success', 'Lomba berhasil dihapus!');
     }
 }
