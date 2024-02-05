@@ -77,8 +77,8 @@ Route::get('login/action', [AuthController::class, 'loginAction'])->name('auth.a
     Route::put('dosen/{id}', [DosenController::class, 'update'])->name('dosen.update');
 
     // ROUTE PORTOFOLIO
-    Route::get('portofolio/create', [PortofolioController::class, 'create'])->name('portofolio.create');
-    Route::post('portofolio', [PortofolioController::class, 'store'])->name('portofolio.store');
+    Route::get('/portofolio/create', [PengajuanController::class, 'createporto'])->name('pengajuan.createporto');
+    Route::post('/portofoliostore', [PengajuanController::class, 'storeporto'])->name('pengajuan.storeporto');
 
     // ROUTE MINAT
     Route::get('minat/create', [MinatController::class, 'create'])->name('minat.create');
@@ -86,6 +86,8 @@ Route::get('login/action', [AuthController::class, 'loginAction'])->name('auth.a
 
     // ROUTE LAPORAN
     Route::get('laporan', [PendaftaranController::class, 'laporan'])->name('pendaftaran.laporan');
+    Route::get('/pendaftaran/cetak-pdf', [PendaftaranController::class, 'cetakPDF'])->name('pendaftaran.cetak-pdf');
+    Route::get('/pengajuan/cetak-pdf2', [PengajuanController::class, 'cetakPDF2'])->name('pengajuan.cetak-pdf2');
 
     // ROUTE SERTIFIKAT
     Route::get('sertif/indexsertifikat', [PendaftaranController::class, 'indexsertifikat'])->name('pendaftaran.indexsertifikat');

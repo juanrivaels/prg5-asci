@@ -97,8 +97,7 @@
         <div class="mt-5" style="background-color: white; width: 100%; position: fixed; left: 0; bottom: 0;">
         <div class="container-fluid">
             <footer class="d-flex flex-wrap pt-3 pb-3 border-top">
-                Hak Cipta &copy; @php echo date('Y') @endphp - Kelompok 06 2D Politeknik Astra 
-            </footer>
+                Hak Cipta &copy; @php echo date('Y') @endphp - Dibuat oleh Juan Rivael S, Embun Aulia, dan Raviana Zahra
         </div>
     </div>
     </body>

@@ -3,7 +3,55 @@
 @section('title', 'Menu Pengajuan Bimbingan')
 
 @section('contents')
+
+<head>
+    <!-- Font Awesome CSS -->
+<!-- Tambahkan ini di bagian head HTML -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-...." crossorigin="anonymous" />
+
+</head>
+
     <main id="main" class="main">
+
+    <!-- HTML -->
+<div class="d-flex justify-content-end">
+    <form id="pdfForm" action="{{ route('pengajuan.cetak-pdf2') }}" method="GET" target="_blank">
+        <input type="hidden" id="sort_start_date" name="sort_start_date" value="{{ request('tanggal_mulai') }}">
+        <input type="hidden" id="sort_end_date" name="sort_end_date" value="{{ request('tanggal_selesai') }}">
+        <input type="date" id="tglawal" name="tglawal" value="{{ request('tanggal_mulai') }}">
+        <input type="date" id="tglakhir" name="tglakhir" value="{{ request('tanggal_selesai') }}">
+        <input type="hidden" name="preview" value="1">
+        <button type="button" onclick="prepareAndSubmit2()" class="btn btn-primary">
+            Cetak Laporan PDF <i class="fas fa-print"></i>
+        </button>
+    </form>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function prepareAndSubmit2() {
+        var tglAwal = document.getElementById('tglawal').value;
+        var tglAkhir = document.getElementById('tglakhir').value;
+        document.getElementById('sort_start_date').value = tglAwal;
+        document.getElementById('sort_end_date').value = tglAkhir;
+        document.getElementById('pdfForm').submit();
+
+        // Menambahkan konfigurasi untuk HTML2PDF
+        var pdfOptions = {
+            margin: 15,
+            filename: 'Laporan_Pengajuan.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }  // Konfigurasi untuk orientasi landscape
+        };
+
+        html2pdf(document.body, pdfOptions);
+
+        // Hentikan submit form agar tidak terjadi reload halaman
+        return false;
+    }
+</script>
+
 
         <div class="pagetitle">
             <h1>Data Pengajuan Bimbingan</h1>
@@ -30,7 +78,6 @@
                                         <th scope="col">Tanggal Pengajuan</th>
                                         <th scope="col">Alasan</th>
                                         <th scope="col">Status Pengajuan</th>
-                                        <th scope="col">Hasil Revisi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,7 +90,7 @@
                                         <td>{{ $pendaftaran->lomba->lb_judul }}</td>
                                         <td>{{ $pendaftaran->user->us_nama }}</td>
                                         <td>{{ $pendaftaran->dosen->us_nama }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($pendaftaran->pd_tglpengajuan)->format('Y-m-d') }}</td> 
+                                        <td>{{ $pendaftaran->pn_tglpengajuan }}</td>
                                         <td>{{ $pendaftaran->pn_revisimahasiswa }}</td>     
                                         <td>
                                             @if ($pendaftaran->pn_status == 1)
@@ -54,13 +101,6 @@
                                                 Selesai
                                             @elseif ($pendaftaran->pn_status == 4)
                                                 Ditolak
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($pendaftaran->pn_status == 3)
-                                                <button class="btn btn-info view-revision" data-toggle="modal" data-target="#revisionModal" data-revision="{{ $pendaftaran->pn_revisidosen }}">
-                                                    Lihat Revisi
-                                                </button>
                                             @endif
                                         </td>
 
@@ -76,6 +116,7 @@
                                     
                                 </tbody>    
                             </table>
+                            
                             <!-- End Table with stripped rows for Pendaftaran -->
                         </div>
                     </div>
@@ -85,7 +126,33 @@
             </div>
         </section>
 
+        <div id="preview-container"></div>
+
     </main><!-- End #main -->
+
+    <script>
+        //     document.addEventListener("DOMContentLoaded", function() {
+        //     // Menggunakan JavaScript untuk mengambil preview saat halaman dimuat
+        //     fetch("{{ route('pengajuan.cetak-pdf2', ['tanggal_mulai' => request('tanggal_mulai'), 'tanggal_selesai' => request('tanggal_selesai'), 'preview' => 1]) }}")
+        //         .then(response => response.blob())
+        //         .then(blob => {
+        //             // Membuat URL objek untuk blob
+        //             const url = URL.createObjectURL(blob);
+
+        //             // Menampilkan PDF di halaman
+        //             const embed = document.createElement("embed");
+        //             embed.src = url;
+        //             embed.width = "100%";
+        //             embed.height = "600px";
+
+        //             // Menambahkan elemen embed ke elemen HTML yang diinginkan
+        //             document.getElementById("preview-container").appendChild(embed);
+        //         });
+        // });
+
+    </script>
+
+
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>

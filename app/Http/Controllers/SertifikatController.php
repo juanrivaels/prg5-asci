@@ -30,10 +30,19 @@ class SertifikatController extends Controller
         ]);
     }
 
-    public function downloadFile($file){
+    public function downloadFile($file, Request $request){
         $path = '../storage/app/sertifikat/'.$file;
-        return response()->download($path, $file);
+        
+        // Check if 'preview' parameter is present in the request
+        if ($request->input('preview')) {
+            // Jika parameter 'preview' ada, kirim response dengan path file PDF
+            return response()->json(['path' => $path]);
+        } else {
+            // Jika tidak, kirim response untuk mengunduh file PDF
+            return response()->download($path, $file);
+        }
     }
+    
 
 
 

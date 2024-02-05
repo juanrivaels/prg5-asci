@@ -38,35 +38,32 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $i=1;
+                                        $i = 1;
                                     @endphp
                                     @forelse($topik as $topik)
-                                    <tr>
-                                        <td>{{ $i++ }}</td>
-                                        <td>{{ $topik->tp_nama }}</td>
-                                        <td>
-                                            <a href="{{ route('topik.edit', ['id' => $topik->id]) }}"
-                                                class="btn btn-warning ">Ubah</a>
-                                            <a class="btn btm-sm btn-danger delete-btn"
-                                                data-id="{{ $topik->id }}">Hapus</a>
-                                            <form id="delete-row-{{ $topik->id }}"
-                                                action="{{ route('topik.destroy', ['id' => $topik->id]) }}"
-                                                method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                @csrf
-                                            </form>
-                                        </td>
-
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="10">
-                                            Data Kosong!
-                                        </td>
-                                    </tr>
+                                        @if($topik->tp_status == 1)
+                                            <tr>
+                                                <td>{{ $i++ }}</td>
+                                                <td>{{ $topik->tp_nama }}</td>
+                                                <td>
+                                                    <a href="{{ route('topik.edit', ['id' => $topik->id]) }}" class="btn btn-warning">Ubah</a>
+                                                    <a class="btn btm-sm btn-danger delete-btn" data-id="{{ $topik->id }}">Hapus</a>
+                                                    <form id="delete-row-{{ $topik->id }}" action="{{ route('topik.destroy', ['id' => $topik->id]) }}" method="POST">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        @csrf
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @empty
+                                        <tr>
+                                            <td colspan="10">
+                                                Data Kosong!
+                                            </td>
+                                        </tr>
                                     @endforelse
                                 </tbody>
-                            </table>
+                                                            </table>
                             <!-- End Table with stripped rows -->
 
                         </div>

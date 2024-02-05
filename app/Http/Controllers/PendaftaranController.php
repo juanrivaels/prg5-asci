@@ -46,14 +46,58 @@ class PendaftaranController extends Controller
         return view('pendaftaran.indexadmin', compact('pendaftarans', 'lombas', 'users'));
     }
 
-    public function laporan()
+    public function laporan(Request $request)
     {
-        $pendaftarans = Pendaftaran::all();
-        $users = User::all();
-        $lombas = Lomba::all();
-        $sertifikats = Sertifikat::all();
+    $pendaftarans = Pendaftaran::all();
+    $users = User::all();
+    $lombas = Lomba::all();
+    $sertifikats = Sertifikat::all();
 
-        return view('pendaftaran.laporan', compact('pendaftarans', 'lombas', 'users', 'sertifikats'));
+    $tanggalMulai = $request->input('tanggal_mulai');
+    $tanggalSelesai = $request->input('tanggal_selesai');
+
+    $query = Pendaftaran::query();
+
+    if ($tanggalMulai && $tanggalSelesai) {
+        $query->whereBetween('pd_tgldaftar', [$tanggalMulai, $tanggalSelesai]);
+    }
+
+    $pendaftarans = $query->orderBy('pd_tgldaftar')->get();
+
+    return view('pendaftaran.laporan', compact('pendaftarans', 'lombas', 'users', 'sertifikats'));
+    }
+
+    
+    public function cetakPDF(Request $request)
+    {
+        $tanggalMulai = $request->input('tanggal_mulai');
+        $tanggalSelesai = $request->input('tanggal_selesai');
+    
+        $query = Pendaftaran::query();
+    
+        if ($tanggalMulai && $tanggalSelesai) {
+            $query->whereBetween('pd_tgldaftar', [$tanggalMulai, $tanggalSelesai]);
+        }
+    
+        $sortStartDate = $request->input('sort_start_date');
+        $sortEndDate = $request->input('sort_end_date');
+    
+        if ($sortStartDate && $sortEndDate) {
+            // Menambahkan kriteria pencarian berdasarkan tanggal pada $query
+            $query->whereBetween('pd_tgldaftar', [$sortStartDate, $sortEndDate]);
+        }
+    
+        $pendaftarans = $query->orderBy('pd_tgldaftar')->get();
+    
+        $pdf = PDF::loadView('pendaftaran.pdf', compact('pendaftarans'));
+    
+        if ($request->input('preview')) {
+            // Menampilkan preview PDF di halaman
+            return $pdf->stream();
+        } else {
+            // Mengunduh PDF
+            return $pdf->download('laporan_pendaftaran.pdf');
+        }
     }
 
     public function indexdosen()

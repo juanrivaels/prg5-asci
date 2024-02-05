@@ -8,6 +8,10 @@ use App\Models\Sertifikat;
 use App\Models\Pengajuan;
 use App\Models\User;
 use App\Models\Lomba;
+use App\Models\Portofolio;
+use App\Models\Topik;
+use PDF;
+use DB;
 
 class PengajuanController extends Controller
 {
@@ -162,6 +166,79 @@ class PengajuanController extends Controller
         $pendaftaran->save();
 
         return redirect()->route('pendaftaran.indexdosen')->with('success', 'Pengajuan ditolak');
+    }
+
+        /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createporto()
+    {
+        $users = User::all();
+        $topiks = Topik::all();
+
+        return view('pengajuan.createporto', [
+            'topiks' => $topiks,
+            'users' => $users,
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeporto(Request $request)
+    {
+        $params = $request->all();
+
+        $porto = Portofolio::create($params);
+
+        if($request->hasFile('pfo_file')){
+            $request->file('pfo_file')->move('portofolio/', $request->file('pfo_file')->getClientOriginalName());
+            $porto->pfo_file = $request->file('pfo_file')->getClientOriginalName();
+            $porto->save();
+        }
+    
+        if ($porto) {
+            return redirect(route('pengajuan.createporto'))->with('success', 'Berhasil menambahkan Portofolio!');
+        } else {
+            return redirect(route('pengajuan.createporto'))->with('error', 'Gagal untuk menambahkan Portofolio.');
+        }
+    }
+
+    public function cetakPDF2(Request $request)
+    {
+        $tanggalMulai = $request->input('tanggal_mulai');
+        $tanggalSelesai = $request->input('tanggal_selesai');
+    
+        $query = Pengajuan::query();
+    
+        if ($tanggalMulai && $tanggalSelesai) {
+            $query->whereBetween('pn_tglpengajuan', [$tanggalMulai, $tanggalSelesai]);
+        }
+    
+        $sortStartDate = $request->input('sort_start_date');
+        $sortEndDate = $request->input('sort_end_date');
+    
+        if ($sortStartDate && $sortEndDate) {
+            // Menambahkan kriteria pencarian berdasarkan tanggal pada $query
+            $query->whereBetween('pn_tglpengajuan', [$sortStartDate, $sortEndDate]);
+        }
+    
+        $pengajuans = $query->orderBy('pn_tglpengajuan')->get();
+    
+        $pdf2 = PDF::loadView('pengajuan.pdf2', compact('pengajuans'));
+    
+        if ($request->input('preview')) {
+            // Menampilkan preview PDF di halaman
+            return $pdf2->stream();
+        } else {
+            // Mengunduh PDF
+            return $pdf2->download('laporan_pengajuan.pdf2');
+        }
     }
 
     /**

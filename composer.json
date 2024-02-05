@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "arielmejiadev/larapex-charts": "^8.0",
         "barryvdh/laravel-dompdf": "^2.0",
+        "dompdf/dompdf": "^2.0",
         "francerz/phpspreadsheet-util": "^0.1.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",

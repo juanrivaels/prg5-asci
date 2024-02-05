@@ -40,10 +40,6 @@ class StoreLombaRequest extends FormRequest
                         $fail('Tanggal selesai harus setelah tanggal mulai.');
                     }
     
-                    // Pengecekan apakah tahun dari tanggal selesai sama dengan tahun dari tanggal mulai
-                    if ($tglSelesai->format('Y') !== $tglMulai->format('Y')) {
-                        $fail('Tanggal selesai harus dalam tahun yang sama dengan tanggal mulai.');
-                    }
     
                     // Pengecekan selisih minimal 7 hari hanya jika tanggal selesai > tanggal mulai
                     if ($tglSelesai > $tglMulai) {
@@ -80,7 +76,6 @@ class StoreLombaRequest extends FormRequest
             'lb_judul.max' => 'Judul lomba tidak boleh lebih dari 255 karakter.',
             'lb_tglmulai.required' => 'Tanggal mulai harus diisi.',
             'lb_tglmulai.date' => 'Format tanggal mulai tidak valid.',
-            'lb_tglmulai.after_or_equal' => 'Tanggal mulai harus setidaknya sama dengan tanggal hari ini.',
             'lb_tglselesai.required' => 'Tanggal selesai harus diisi.',
             'lb_tglselesai.date' => 'Format tanggal selesai tidak valid.',
             'lb_tglselesai.not_in' => 'Tanggal selesai tidak boleh sama dengan tanggal mulai.',

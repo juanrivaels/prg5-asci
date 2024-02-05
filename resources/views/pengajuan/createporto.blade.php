@@ -32,7 +32,7 @@
             @endif
 
             <!-- Vertical Form -->
-            <form action="{{ route('portofolio.storeporto') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('pengajuan.storeporto') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">

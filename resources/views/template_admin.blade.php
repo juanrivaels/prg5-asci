@@ -207,7 +207,7 @@
                 </li><!-- End Error 404 Page Nav -->
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ route('portofolio.create') }}">
+                    <a class="nav-link collapsed" href="{{ route('pengajuan.createporto') }}">
                         <i class="bi bi-clipboard-data-fill"></i>
                         <span>Portofolio</span>
                     </a>
